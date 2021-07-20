@@ -6,10 +6,15 @@
 Welcome to the PyPSA meets Africa documentation!
 ================================================
 
-PyPSA meets Africa is a free and open source software project aiming to develop a powerful energy system model for Africa. The tool which is currenlty under development and will be heavily based on `PyPSA <https://pypsa.readthedocs.io/en/latest/>`_ and `PyPSA-Eur <https://pypsa-eur.readthedocs.io/en/latest/>`_. A short presentation about our project and its aims is given on our `preliminary website <https://max-parzen.github.io/Project_PyPSA_Africa.html>`_. There you can also sign-up to our Newsletter. 
+PyPSA meets Africa is a free and open source software project aiming to develop a powerful energy system model for Africa. The tool which is currenlty under development and will be heavily based on `PyPSA <https://pypsa.readthedocs.io/en/latest/>`_ and `PyPSA-Eur <https://pypsa-eur.readthedocs.io/en/latest/>`_. A short presentation about our project and its aims is given on our `website <https://pypsa-meets-africa.github.io/>`_. There you can also sign-up to our Newsletter. 
 
 Watch our latest discusson with African leaders about `Open Energy System Modelling in Africa: State of the Art and Future Opportunities <https://www.youtube.com/watch?v=E0V0T4U9nmQ>`_. Let's work together for a better future.
 
+.. image:: img/africa_osm_map.jpeg
+    :width: 60%
+    :align: center
+
+=============
 Documentation
 =============
 
@@ -32,12 +37,26 @@ Documentation
 .. toctree::
    :hidden:
    :maxdepth: 2
-   :caption: Code Documenation 
+   :caption: Code Documenation (automated)
 
    api_reference
    how_to_docs
 
+**Project Info**
 
+* :doc:`project_structure_and_credits`
+* :doc:`contributing`
+* :doc:`learning_material`
+* :doc:`talks_and_papers`
 
+.. toctree::
+   :hidden:
+   :maxdepth: 2
+   :caption: Project Info
 
+   project_structure_and_credits
+   contributing
+   learning_material
+   talks_and_papers
+   
 
