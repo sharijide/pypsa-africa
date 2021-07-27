@@ -1,3 +1,4 @@
 [submodule "powerplantmatching"]
 	path = data_exploration/WP2 - Conventional generators/powerplantmatching
-	url = git@github.com:koen-vg/powerplantmatching.git
+	url = https://github.com/koen-vg/powerplantmatching.git
+
