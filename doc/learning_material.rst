@@ -41,7 +41,9 @@ PyPSA Introduction (essential)
 - Watch how PyPSA-Eur is designed https://www.youtube.com/watch?v=ty47YU1_eeQ (1h)
 - Watch and put your hands on to make PyPSA-Eur work on your computer https://www.youtube.com/watch?v=mAwhQnNRIvs (1-3h)
 - While watching these PyPSA videos always have a look into the excellent `PyPSA-Eur documentation <https://pypsa-eur.readthedocs.io/en/latest/index.html>`_
-- To see what data we can extract we work usually closely with the `basic PyPSA documentation <https://pypsa.readthedocs.io/en/latest/components.html>`_ 
+- To see what data we can extract we work usually closely with the `basic PyPSA documentation <https://pypsa.readthedocs.io/en/latest/components.html>`_
+- Atlite, which we use for renewable potentials and availbility constraint provides some great `examples <https://github.com/PyPSA/atlite/tree/master/examples>`_
+- PyPSA, and it's core capabilities, can be ideally scanned by going through some provided `examples <https://github.com/PyPSA/PyPSA/tree/master/examples>`_.
 
 
 Git and GitHub (essential)
