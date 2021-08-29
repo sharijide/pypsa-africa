@@ -13,6 +13,7 @@ Learning material
 Depending on what work package you want to contribute you require different skillsets. 
 Below we list a set of useful material to prepare for contributions.
 Most parts are marked as *essential* and are highly likely to be relevant in most work packages.
+Get in touch with us to enter early and specialise along the way. 
 
 If you learn these bits below, you are 100% ready. 
 Though, you might learn much more beyond these points. 
