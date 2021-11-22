@@ -56,6 +56,7 @@ Code Team
 - Matin Mahmood (University of Edinburgh, United Kingdom)
 - Max Parzen (University of Edinburgh, United Kingdom)
 - Olukunle Owolabi (Tufts University, United States)
+- Babajide Shari (WASCAL, Climate Change and Energy, UAM, Niger)
 
 Outreach Team
 --------------
