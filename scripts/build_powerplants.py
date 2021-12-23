@@ -69,6 +69,8 @@ import pandas as pd
 import powerplantmatching as pm
 import pypsa
 import yaml
+from _helpers import _read_csv_nafix
+from _helpers import _to_csv_nafix
 from _helpers import configure_logging
 from scipy.spatial import cKDTree as KDTree
 from shapely import wkt
@@ -76,18 +78,17 @@ from shapely import wkt
 logger = logging.getLogger(__name__)
 
 
-def add_custom_powerplants(ppl):
-    custom_ppl_query = snakemake.input.custom_powerplants
-    if not custom_ppl_query:
-        return ppl
-    add_ppls = pd.read_csv(custom_ppl_query, index_col=0, dtype={"bus": "str"})
-    # if isinstance(custom_ppl_query, str):
-    # add_ppls.query(custom_ppl_query, inplace=True)
+def convert_osm_to_pm(filepath_ppl_osm, filepath_ppl_pm):
+
+    add_ppls = _read_csv_nafix(filepath_ppl_osm,
+                               index_col=0,
+                               dtype={"bus": "str"})
 
     custom_ppls_coords = gpd.GeoSeries.from_wkt(add_ppls["geometry"])
     add_ppls = (
         add_ppls.rename(
             columns={
+                "name": "Name",
                 "tags.generator:source": "Fueltype",
                 "tags.generator:type": "Technology",
                 "tags.power": "Set",
@@ -131,7 +132,8 @@ def add_custom_powerplants(ppl):
                         "plant": "PP"
                     },
                 )).assign(
-                    Name="",
+                    Name=lambda df: "OSM_" + df.Country.astype(str) + "_" + df.
+                    id.astype(str) + "-" + df.Name.astype(str),
                     Efficiency="",
                     Duration="",
                     Volume_Mm3="",
@@ -143,8 +145,8 @@ def add_custom_powerplants(ppl):
                     DateOut="",
                     lat=custom_ppls_coords.y,
                     lon=custom_ppls_coords.x,
-                    EIC="",
-                    projectID="",
+                    EIC=lambda df: df.id,
+                    projectID=lambda df: "OSM" + df.id.astype(str),
                 ))
 
     # All Hydro objects can be interpreted by PPM as Storages, too
@@ -173,7 +175,25 @@ def add_custom_powerplants(ppl):
     add_ppls.loc[add_ppls["Technology"] == "battery storage", "Set"] = "Store"
 
     add_ppls = add_ppls.replace(dict(Fueltype={"battery": "Other"})).drop(
-        columns=["tags.generator:method", "geometry", "Area"])
+        columns=["tags.generator:method", "geometry", "Area", "country", "id"])
+
+    _to_csv_nafix(add_ppls, filepath_ppl_pm, index=False)
+
+    return add_ppls
+
+
+def add_custom_powerplants(ppl):
+    if "custom_powerplants" not in snakemake.config["electricity"]:
+        return ppl
+
+    custom_ppl_query = snakemake.config["electricity"]["custom_powerplants"]
+    if not custom_ppl_query:
+        return ppl
+    add_ppls = pd.read_csv(snakemake.input.custom_powerplants,
+                           index_col=0,
+                           dtype={"bus": "str"})
+    # if isinstance(custom_ppl_query, str):
+    #     add_ppls.query(custom_ppl_query, inplace=True)
 
     return ppl.append(add_ppls,
                       sort=False,
@@ -193,12 +213,21 @@ if __name__ == "__main__":
     with open(snakemake.input.pm_config, "r") as f:
         config = yaml.safe_load(f)
 
+    filepath_osm_ppl = snakemake.input.osm_powerplants
+    filepath_osm2pm_ppl = snakemake.output.powerplants_osm2pm
+
+    csv_pm = convert_osm_to_pm(filepath_osm_ppl, filepath_osm2pm_ppl)
+
     n = pypsa.Network(snakemake.input.base_network)
     countries = n.buses.country.unique()
     config["target_countries"] = countries
 
+    if "EXTERNAL_DATABASE" in config:
+        config["EXTERNAL_DATABASE"]["fn"] = os.path.join(
+            os.getcwd(), filepath_osm2pm_ppl)
+
     ppl = (pm.powerplants(
-        from_url=False,
+        from_url=False, update_all=True,
         config=config).powerplant.fill_missing_decommyears().query(
             'Fueltype not in ["Solar", "Wind"] and Country in @countries').
            replace({
@@ -237,4 +266,4 @@ if __name__ == "__main__":
         logging.warning(
             f"Couldn't find close bus for {bus_null_b.sum()} powerplants")
 
-    ppl.to_csv(snakemake.output[0])
+    ppl.to_csv(snakemake.output.powerplants)
