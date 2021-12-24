@@ -7,10 +7,10 @@ name: CI
 on:
   push:
     branches:
-    - new-main
+    - main
   pull_request:
     branches:
-    - new-main
+    - main
   schedule:
     - cron: "0 5 * * TUE"
 
