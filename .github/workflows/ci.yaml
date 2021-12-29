@@ -51,4 +51,10 @@ jobs:
         conda list
         cp test/config.test1.yaml config.yaml
         snakemake --cores all solve_all_networks
-        rm -rf resources/*.nc resources/*.geojson resources/*.h5 networks results
+    
+    - name: Test plotting and summaries networks
+      run: |
+        snakemake --cores all plot_all_p_nom
+        snakemake --cores all plot_all_summaries
+        snakemake --cores all make_all_summaries
+      # rm -rf resources/*.nc resources/*.geojson resources/*.h5 networks results
